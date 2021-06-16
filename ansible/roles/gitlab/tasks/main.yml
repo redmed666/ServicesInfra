@@ -1,0 +1,29 @@
+---
+
+- name: Set hostname to gitlab
+  hostname:
+    name: gitlab
+  become: yes
+
+- name: Create a directory if it does not exist
+  file:
+    path: /gitlab
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Install gitlab
+  args: 
+    executable: /bin/bash
+  become: yes
+  shell: |
+      echo "[$(date +%H:%M:%S)]: Running apt-fast install..."
+      sudo docker run --detach \
+        --hostname gitlab \
+        --publish 443:443 --publish 80:80 --publish 22:22 \
+        --name gitlab \
+        --restart always \
+        --volume /gitlab/config:/etc/gitlab \
+        --volume /gitlab/logs:/var/log/gitlab \
+        --volume /gitlab/data:/var/opt/gitlab \
+        gitlab/gitlab-ee:latest

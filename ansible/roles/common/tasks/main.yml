@@ -1,0 +1,59 @@
+---
+- name: Install aptitude using apt
+  apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+  become: yes
+
+- name: Install required system packages
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools', 'vim', 'tmux', 'zsh', 'zip', 'unzip']
+  become: yes
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+  become: yes
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu bionic stable
+    state: present
+  become: yes
+
+- name: Update apt and install docker-ce
+  apt: update_cache=yes name=docker-ce state=latest
+  become: yes
+
+- name: Install Docker Module for Python
+  pip:
+    name: docker
+  become: yes
+
+- name: Installing docker-compose
+  shell: |
+      echo "[$(date +%H:%M:%S)]: Installing docker-compose..."
+      sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      sudo chmod +x /usr/local/bin/docker-compose
+      sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+  become: yes
+
+- name: Installing ohmytmux
+  shell: |
+      echo "[$(date +%H:%M:%S)]: Installing ohmytmux..."
+      cd /home/vagrant
+      git clone https://github.com/gpakosz/.tmux.git
+      ln -s -f .tmux/.tmux.conf
+      cp .tmux/.tmux.conf.local .
+      cd /root
+      git clone https://github.com/gpakosz/.tmux.git
+      ln -s -f .tmux/.tmux.conf
+      cp .tmux/.tmux.conf.local .
+  become: yes
+
+- name: Installing ohmyzsh
+  shell: |
+      echo "[$(date +%H:%M:%S)]: Installing ohmyzsh..."
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+      cd /home/vagrant
+      sudo su -c vagrant sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  become: yes

@@ -1,0 +1,24 @@
+---
+- hosts: gitlab
+  roles:
+    - common
+    - gitlab
+  tags: gitlab
+
+- hosts: ghostwriter
+  roles:
+    - common
+    - ghostwriter
+  tags: ghostwriter
+
+- hosts: mythic
+  roles:
+    - common
+    - mythic
+  tags: mythic
+
+- hosts: others
+  roles:
+    - common
+    - others
+  tags: others

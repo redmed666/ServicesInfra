@@ -1,0 +1,17 @@
+---
+
+- name: Set hostname to gitlab
+  hostname:
+    name: gitlab
+  become: yes
+
+- name: Install mythic
+  args: 
+    executable: /bin/bash
+  become: yes
+  shell: |
+      echo "[$(date +%H:%M:%S)]: Install mythic..."
+      cd /
+      git clone https://github.com/its-a-feature/Mythic
+      cd Mythic
+      ./start_mythic.sh

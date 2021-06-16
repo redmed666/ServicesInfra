@@ -1,0 +1,37 @@
+---
+
+gitlab:
+  hosts:
+    192.168.1.124:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
+
+ghostwriter:
+  hosts:
+    192.168.1.129:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
+
+mythic:
+  hosts:
+    192.168.1.134:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'
+
+others:
+  hosts:
+    192.168.1.139:
+      ansible_user: vagrant
+      ansible_password: vagrant
+      ansible_port: 22
+      ansible_connection: ssh
+      ansible_ssh_common_args: '-o UserKnownHostsFile=/dev/null'

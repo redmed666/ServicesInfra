@@ -1,0 +1,36 @@
+---
+
+- name: Set hostname to ghostwriter
+  hostname:
+    name: ghostwriter
+  become: yes
+
+- name: Create a directory if it does not exist
+  file:
+    path: /vagrant
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Copy resources
+  synchronize:
+    src: ../Vagrant/resources
+    dest: /vagrant/
+  become: yes
+
+- name: Unzip ghostwriter
+  args:
+    executable: /bin/bash
+  become: yes
+  shell: |
+      cd /vagrant/
+      unzip ./ghostwriter.zip /ghostwriter/ 
+
+- name: Docker-compose up
+  args: 
+    executable: /bin/bash
+  become: yes
+  shell: |
+      echo "[$(date +%H:%M:%S)]: Running docker-compose up..."
+      cd /ghostwriter/Ghostwriter
+      docker-compose -f local.yml up -d
